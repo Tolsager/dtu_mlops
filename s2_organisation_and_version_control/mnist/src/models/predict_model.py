@@ -22,7 +22,7 @@ def evaluate(model_checkpoint):
     model.to(device)
     model.load_state_dict(checkpoint['state_dict'])
 
-    test_dict = get_image_and_label_tensors()['test']
+    test_dict = torch.load('data/processed/processed_data.pth')['test']
     ds_test = MNISTDataset(test_dict)
     dl_test = torch.utils.data.DataLoader(ds_test, batch_size=64)
 
@@ -43,6 +43,6 @@ def evaluate(model_checkpoint):
         
         print(f"Accuracy: {n_correct / n_samples}")
 
-click.add_command(evaluate)
+cli.add_command(evaluate)
 if __name__ == '__main__':
     cli()

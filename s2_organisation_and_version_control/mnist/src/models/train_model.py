@@ -33,18 +33,20 @@ def train(lr, epochs, batch_size, device):
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr)
 
     accuracies = []
+    model.train()
+    start_weights = list(model.parameters())
     for epoch in range(epochs):
         n_correct = 0
         n_samples = 0
         for images, labels in dl_train:
             images = images.to(device)
+            optimizer.zero_grad()
 
             out = model(images)
             labels = labels.type(torch.LongTensor)
             labels = labels.to(device)
             loss = criterion(out, labels)
 
-            optimizer.zero_grad()
             loss.backward()
             optimizer.step()
 
@@ -57,6 +59,7 @@ def train(lr, epochs, batch_size, device):
         accuracy = (n_correct / n_samples).cpu().item()
         print(f"Accuracy: {accuracy}")
         accuracies.append(accuracy)
+        print(f"Start weights == new weights: {start_weights==list(model.parameters())}")
 
         plt.plot(accuracies)
         plt.xlabel('Epochs')

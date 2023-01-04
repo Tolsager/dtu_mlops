@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import torch.nn.functional as F
 import click
 import logging
 from pathlib import Path
@@ -34,14 +35,12 @@ def get_image_and_label_tensors(data_path: str) -> dict[str: dict]:
     test_labels = test_file['labels']
 
     train_mean = train_images.mean(dim=0)
-    train_var = train_images.var(dim=0)
     test_mean = test_images.mean(dim=0)
-    test_var = test_images.var(dim=0)
 
     train_images -= train_mean
-    train_images /= train_var
-    test_images -= test_var
-    test_images /= test_var
+    train_images = F.normalize(train_images, dim=0)
+    test_images -= test_mean
+    test_images = F.normalize(test_images, dim=0)
     
     train = {'images': train_images, 'labels': train_labels}
     test = {'images': test_images, 'labels': test_labels}

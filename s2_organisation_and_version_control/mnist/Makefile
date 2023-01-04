@@ -33,6 +33,7 @@ data: requirements
 clean:
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
+	rm data/processed/*
 
 ## Lint using flake8
 lint:
@@ -40,6 +41,9 @@ lint:
 
 train:
 	$(PYTHON_INTERPRETER) src/models/train_model.py train
+
+train_cpu:
+	$(PYTHON_INTERPRETER) src/models/train_model.py train --device cpu
 ## Upload Data to S3
 sync_data_to_s3:
 ifeq (default,$(PROFILE))
