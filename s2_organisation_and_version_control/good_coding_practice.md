@@ -23,20 +23,20 @@ nav_order: 3
 
 > Code is read more often than it is written. -- [Guido Van Rossum](https://gvanrossum.github.io/) (author of Python)
 
-To understand what good coding practice are, it is important to understand what it is *not*:
+To understand what good coding practice is, it is important to understand what it is *not*:
 
 * Making sure your code run fast
 * Making sure that you use a specific coding paradigm (object orientated programming ect.)
-* Making sure to only few dependencies
+* Making sure to only use few dependencies
 
 Instead good coding practices really comes down to two topics: documentation and styling.
 
 ## Documentation
 
 Most programmers have a love-hate relationship with documentation: We absolute hate writing it ourself, but love
-when someone else have actually taken time to add it to their code. There is no doubt about that well documented
-code is much easier to maintain as you do not need to remember all details about the code to still maintain it.
-It is key to remember that good documentation saves more time than it takes to write.
+when someone else has actually taken time to add it to their code. There is no doubt about that well documented
+code is much easier to maintain, as you do not need to remember all details about the code to still maintain it.
+It is key to remember that good documentation saves more time, than it takes to write.
 
 The problem with documentation is that there is no right or wrong way to do it. You can end up doing:
 
@@ -187,6 +187,19 @@ from typing import Union
 def add2(x: Union[int, float, Tensor], y: Union[int, float, Tensor]) -> Union[int, float, Tensor]:
    return x+y
 ```
+
+Since `Python 3.10` type expressions have been added to the language, such that `A | B | ...` can be written instead of
+`Union[A, B, ...]` and instead of `Optional[A]` you can write `A | None`. The above example could, therefore, be
+written as:
+
+```python
+from torch import Tensor  # note it is Tensor with upper case T. This is the base class of all tensors
+def add2(x: int | float | Tensor, y: int | float | Tensor) -> int | float | Tensor:
+   return x+y
+```
+
+The type expressions does not need an import statement and might make it simpler to read for complex types, however, it
+is not fully backwards compatible.
 
 Finally, since this is a very generic function it also works on `numpy` arrays ect. we can always default to the `Any`
 type if we are not sure about all the specific types that a function can take

@@ -14,7 +14,7 @@ class MyAwesomeModel(nn.Module):
         self.fc3 = nn.Linear(fc2_neurons, fc3_neurons)
         self.bn1 = nn.BatchNorm1d(fc1_neurons)
         self.bn2 = nn.BatchNorm1d(fc2_neurons)
-    
+
     def forward(self, x):
         x = x.view(x.shape[0], -1)
 
@@ -26,6 +26,3 @@ class MyAwesomeModel(nn.Module):
 
         x = self.fc3(x)
         return x
-
-
-
